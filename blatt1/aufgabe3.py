@@ -36,16 +36,17 @@ def teilaufgabe_a():
     y_pred = np.array[float]
     """
     year_built, km_driven, selling_price = load_honda_city_dataset()
+    
     num_instances = year_built.size
+    data_matrix = np.column_stack((np.full(num_instances, 1), year_built, km_driven)) # holds "learning data"
+    dependent_variable_vector = np.array(selling_price)
 
-    data_matrix = np.transpose(np.array([np.full(num_instances, 1), year_built, km_driven]))
-    y_data = np.array(selling_price)
+    data_matrix_transposed = np.transpose(data_matrix)
 
     weights = np.matmul(
         np.matmul(
             np.linalg.inv(
-                np.matmul(
-                    np.transpose(data_matrix), data_matrix)), np.transpose(data_matrix)), y_data)
+                np.matmul(data_matrix_transposed, data_matrix)), data_matrix_transposed), dependent_variable_vector)
     
     return weights
 
@@ -73,9 +74,8 @@ def teilaufgabe_b():
 
     '''
     Was bedeutet der RMSE im Kontext dieser Aufgabe?
-    Bedeutung: Der RMSE bemisst die Abweichung zwischen den Vorhersagen unserer Regressionsfunktion und den tatsächlichen Verkaufspreisen. Aufgrund dem algebraischen Ermittlungsverfahren der Gewichte ist dieser Fehler minimal.
+    Bedeutung: Der RMSE bemisst die Abweichung zwischen den Vorhersagen unserer Regressionsfunktion und den tatsächlichen Verkaufspreisen. Aufgrund des algebraischen Ermittlungsverfahrens der Gewichte ist dieser Fehler minimal.
     '''
-
 
 if __name__ == "__main__":
     print(f"Teilaufgabe a:\n{teilaufgabe_a()}")
