@@ -61,14 +61,14 @@ def teilaufgabe_b():
     
     sample_mean = sus_results["ergebnis"].mean()
 
-    dice_values = pd.Categorical([1,2,4,8,16,32])
-    frequencies = np.asarray(sus_results["ergebnis"].value_counts(normalize=True).sort_index())
+    dice_values = [1,2,4,8,16,32]
+    frequencies = sus_results["ergebnis"].value_counts(normalize=True).sort_index()
 
-    ax.bar(range(len(dice_values)), frequencies)
+    ax.bar(range(len(dice_values)), np.asarray(frequencies))
+    ax.set_xlabel("Würfelergebnis")
+    ax.set_ylabel("Relative Häufigkeit")
     ax.set_xticks(range(len(dice_values)))
     ax.set_xticklabels(dice_values)
-
-    # ax.hist(sus_results["ergebnis"])
 
     return fig, sample_mean
 
