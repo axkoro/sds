@@ -8,6 +8,7 @@ from os.path import realpath
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 from matplotlib.backends.backend_pdf import PdfPages
 
 
@@ -79,12 +80,28 @@ def teilaufgabe_c(expected_value_fair, spieler_name=1, tisch_name="B"):
     fig: die matplotlib figure
     """
 
-    fig, ax = plt.subplots()
+    casino_data = pd.read_csv("casino.csv")
+    player_results = casino_data[(casino_data["spieler"] == spieler_name) & (casino_data["tisch"] == tisch_name)]
+    player_results = player_results.reset_index(drop=True)
 
-    # Implementieren Sie hier Ihre Lösung
+    mean_over_time = np.zeros(len(player_results), dtype=float)
+    mean_over_time[0] = player_results["ergebnis"][0]
+    for i in range(1,len(player_results)):
+        mean_over_time[i] = (1/(i+1)) * player_results["ergebnis"][i] + (i/(i+1)) * mean_over_time[i-1]
+
+    fig, ax = plt.subplots()
+    player_results["zeit"] = pd.to_datetime(player_results["zeit"], format="%Y-%m-%d %H:%M:%S")
+    ax.xaxis.set_major_formatter(mdates.DateFormatter("%H:%M"))
+
+    ax.plot(player_results["zeit"], mean_over_time, label="Sample Mean (im Laufe der Zeit)")
+    ax.axhline(expected_value_fair, linestyle="--", color="grey", label="Erwartungswert")
+    ax.axvline(pd.to_datetime("2024-03-27 21:00:00"), linestyle=":", color="grey", label="Vermuteter Würfeltausch")
+
+    ax.legend()
+    ax.set_xlabel("Uhrzeit (hh:mm)")
+    ax.set_ylabel("Sample Mean")
 
     return fig
-
 
 if __name__ == "__main__":
     figures = []
@@ -123,12 +140,12 @@ if __name__ == "__main__":
     print("Teilaufgabe (b) :")
     print(f"{sample_mean=}")  # ~ 10.754
 
-    # fig = teilaufgabe_c(expected_mean)
-    # figures.append(fig)
+    fig = teilaufgabe_c(expected_mean)
+    figures.append(fig)
 
-    # fig = teilaufgabe_c(expected_mean, spieler_name=2, tisch_name="B")
-    # figures[-1].axes[0].sharey(fig.axes[0])
-    # figures.append(fig)
+    fig = teilaufgabe_c(expected_mean, spieler_name=2, tisch_name="B")
+    figures[-1].axes[0].sharey(fig.axes[0])
+    figures.append(fig)
 
     # Save the figures to a multi-page PDF
     pdf_path = "aufgabe3_plots.pdf"
