@@ -1,10 +1,15 @@
 from os.path import realpath
 
+import math
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 
+def normal_pdf(range=10, resolution=0.1):
+    x = np.arange(-range/2, range/2, resolution)
+    y = (1/math.sqrt(2 * math.pi)) * np.exp(-0.5 * x**2)
+    return x, y
 
 def teilaufgabe_a():
     """
@@ -121,12 +126,109 @@ def teilaufgabe_c():
     Rückgabewerte:
     figures: Eine Liste aller matplotlib Figures
     """
+    csv_path = "Pokemon.csv"
+    sample_size = 6
+    num_samples_list = [10, 100, 1000, 10000]
     figures = []
 
-    # Implementieren Sie hier Ihre Lösung
+    data = pd.read_csv(csv_path, usecols=["HP", "Attack", "Speed"])
+    hp_data = data["HP"].to_numpy()
+    attack_data = data["Attack"].to_numpy()
+    speed_data = data["Speed"].to_numpy()
+
+    # HP figure
+    hp_fig = plt.figure()
+    hp_fig.suptitle('Verteilungen von m Sample Means (HP-Werte)')
+    hp_fig.subplots_adjust(hspace=0.4)
+    for index, num_samples in enumerate(num_samples_list):
+        sample_means = np.zeros(num_samples)
+
+        # Samples nehmen
+        for i in range(num_samples):
+            sample = np.random.choice(hp_data, sample_size)
+            sample_means[i] = sample.mean()
+
+        # Z-Transformation der Sample Means
+        mean = sample_means.mean()
+        sigma = sample_means.std()
+        z_sample_means = np.zeros(num_samples)
+        z_sample_means = (sample_means - mean) / sigma
+
+        ax = hp_fig.add_subplot(2, 2, index+1)
+        ax.hist(z_sample_means, weights=np.ones(num_samples)/num_samples) 
+        ax.set_xlim(-5, 5)
+        ax.set_title('m=' + str(num_samples))
+
+        # Standardnormalverteilung plotten
+        x, y = normal_pdf()
+        ax.plot(x, y)
+
+    figures.append(hp_fig)
+
+    # Attack figure
+    attack_fig = plt.figure()
+    attack_fig.suptitle('Verteilungen von m Sample Means (Attack-Werte)')
+    attack_fig.subplots_adjust(hspace=0.4)
+    for index, num_samples in enumerate(num_samples_list):
+        sample_means = np.zeros(num_samples)
+
+        # Samples nehmen
+        for i in range(num_samples):
+            sample = np.random.choice(attack_data, sample_size)
+            sample_means[i] = sample.mean()
+
+        # Z-Transformation der Sample Means
+        mean = sample_means.mean()
+        sigma = sample_means.std()
+        z_sample_means = np.zeros(num_samples)
+        z_sample_means = (sample_means - mean) / sigma
+
+        ax = attack_fig.add_subplot(2, 2, index+1)
+        ax.hist(z_sample_means, weights=np.ones(num_samples)/num_samples)
+        ax.set_xlim(-5, 5)
+        ax.set_title('m=' + str(num_samples))
+
+        # Standardnormalverteilung plotten
+        x, y = normal_pdf()
+        ax.plot(x, y)
+
+    figures.append(attack_fig)
+
+    # Speed figure
+    speed_fig = plt.figure()
+    speed_fig.suptitle('Verteilungen von m Sample Means (Speed-Werte)')
+    speed_fig.subplots_adjust(hspace=0.4)
+    for index, num_samples in enumerate(num_samples_list):
+        sample_means = np.zeros(num_samples)
+
+        # Samples nehmen
+        for i in range(num_samples):
+            sample = np.random.choice(speed_data, sample_size)
+            sample_means[i] = sample.mean()
+
+        # Z-Transformation der Sample Means
+        mean = sample_means.mean()
+        sigma = sample_means.std()
+        z_sample_means = np.zeros(num_samples)
+        z_sample_means = (sample_means - mean) / sigma
+
+        ax = speed_fig.add_subplot(2, 2, index+1)
+        ax.hist(z_sample_means, weights=np.ones(num_samples)/num_samples)
+        ax.set_xlim(-5, 5)
+        ax.set_title('m=' + str(num_samples))
+
+        # Standardnormalverteilung plotten
+        x, y = normal_pdf()
+        ax.plot(x, y)
+
+    figures.append(speed_fig)
+
 
     '''
     Interpretation:
+    Die Verteilungen nähern sich zwar scheinbar an die Normalverteilung an, dies ist aber ein anderer Effekt als der des zentralen
+    Grenzwertsatzes. Dieser beschreibt nämlich eine Annäherung für n -> unendlich, wobei n nicht etwa der Anzahl der Samples entspricht,
+    sondern der Größe der einzelnen Samples.
     '''
     return figures
 
