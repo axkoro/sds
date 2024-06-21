@@ -1,8 +1,3 @@
-# -------------------------------
-# Abgabegruppe: 1
-# Personen: Ultrich Edima, Moritz Spuehler, Alexandre Koroneos
-# HU-Accountname: edimult, spuehlem, koroneoa
-# -------------------------------
 from os.path import realpath
 
 import numpy as np

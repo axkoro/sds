@@ -1,8 +1,3 @@
-# -------------------------------
-# Abgabegruppe: 1
-# Personen: Moritz Spuehler, Ultrich Edima, Alexandre Koroneos
-# HU-Accountname: spuehlem, edimau, koroneoa
-# -------------------------------
 import math
 import numpy as np
 
