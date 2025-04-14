@@ -90,7 +90,7 @@ def teilaufgabe_c(X: np.ndarray, classes: np.ndarray, priors: np.ndarray, conds:
     return prediction, prediction_log_probs
 
 
-if __name__ == "__main__":
+if __name__ == "__main__": # given by the tutors
     # Laden des Datensatzes
     df_train = pd.read_csv("song_lyrics/train.csv")
     df_test = pd.read_csv("song_lyrics/test.csv")

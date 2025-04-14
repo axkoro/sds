@@ -98,7 +98,7 @@ def teilaufgabe_c(expected_value_fair, spieler_name=1, tisch_name="B"):
 
     return fig
 
-if __name__ == "__main__":
+if __name__ == "__main__": # given by the tutors
     figures = []
 
     sides, side_probabilities, expected_mean, cdf = teilaufgabe_a()
