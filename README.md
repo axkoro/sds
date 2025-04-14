@@ -5,16 +5,17 @@ This project contains multiple tasks that I worked on for the module "Statistik 
 ## Major Tasks
 
 - **Text Classification:**  
-  Implement a Bag-of-Words model using scikit-learn’s CountVectorizer and a Naive Bayes classifier to distinguish Metal lyrics from non-Metal.
+  Implement a Naive Bayes classifier to distinguish Metal lyrics from non-Metal.
 
 - **Regression Analysis:**  
   Use a multivariate linear regression on the [Honda City dataset](https://www.kaggle.com/datasets/nehalbirla/vehicle-dataset-from-cardekho) to predict selling prices based on year built and kilometers driven.
 
-- **Statistical Simulations:**  
-  Simulate dice rolls and process casino data to analyze distributions and sample means, and visualize results with matplotlib.
+- **Casino Analysis:**  
+  Analyze casino CSV data for rolling sample means, outcome frequencies, and time-based trends.
 
 - **Hypothesis Testing and Additional Analyses:**  
   Perform hypothesis testing (e.g., t-tests) and other experiments to explore differences between sample groups and various statistical properties.
+
 
 ## Setup and Execution
 
@@ -27,7 +28,8 @@ This project contains multiple tasks that I worked on for the module "Statistik 
 2. **Running the Tasks:**  
    Execute the Python files directly. For example, to run the text classification task:
    ```bash
-   python blatt2/aufgabe3.py
+   cd text_classification
+   python aufgabe3.py
    ```
    Other tasks can be run similarly.
 
